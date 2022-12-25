@@ -7,6 +7,7 @@ type barProps={
 }
 
 const Bar=({todoObj,handleEdit,handleDelete}: barProps)=>{
+  
   const {todo, index} = todoObj
   const [editTask, setEditTask] = useState(todo)
   const [editing, setEditing] = useState(false)
@@ -19,28 +20,28 @@ const Bar=({todoObj,handleEdit,handleDelete}: barProps)=>{
   }
   
   return(
-    <>
+    <div className=' drop-shadow-sm shadow-gray-500 w-full  flex-col '>
     {
        editing ? 
        <div>
-       <input className='block w-fullflex rounded-sm p-2 text-gray-600  justify-between w-full bg-gray-100 my-2' type="text" value={editTask} onChange={(e)=>{setEditTask(e.target.value)}} onKeyDown={handleKeyDown}  />
-     </div> 
+          <input className='block w-full rounded-sm p-2 text-gray-600  bg-white my-2' type="text" value={editTask} onChange={(e)=>{setEditTask(e.target.value)}} onKeyDown={handleKeyDown}  />
+       </div> 
      :
-      <div className='flex rounded-sm p-1  justify-between w-full bg-gray-100 my-2 '>
-        <>   
-        <span className=''>
-          {todo}
+      <div className=' rounded-sm p-1  justify-between  bg-white my-2 '>
+         
+        <span className=' break-words '>
+          <h1>{todo}</h1>
         </span> 
           <span className=' text-white'>
             <button className='bg-green-500 btn' onClick={()=>{setEditing(true)}} >Edit</button>
             <button className='btn bg-red-600' onClick={()=>{handleDelete(todo)}} >delete</button>  
           </span>
-        </>
+        
         </div>
     }
      
     
-    </>
+    </div>
   )
 }
 
