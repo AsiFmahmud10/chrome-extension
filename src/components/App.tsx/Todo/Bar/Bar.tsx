@@ -1,20 +1,20 @@
 import React, { useState, KeyboardEvent } from 'react'
 
 type barProps={
-  todoObj: {todo:string,index:number},
-  handleEdit: (editTask:string,index:number) => void,
+  taskObj: {task:string,index:number},
+  handleEditTask: (editTask:string,oldTask:string) => void,
   handleDelete:(task:string) => void
 }
 
-const Bar=({todoObj,handleEdit,handleDelete}: barProps)=>{
+const Bar=({taskObj,handleEditTask,handleDelete}: barProps)=>{
   
-  const {todo, index} = todoObj
-  const [editTask, setEditTask] = useState(todo)
+  const {task, index} = taskObj
+  const [editTask, setEditTask] = useState(task)
   const [editing, setEditing] = useState(false)
 
   const handleKeyDown =(e :KeyboardEvent<HTMLInputElement>)=>{
     if(e.key === "Enter"){
-      handleEdit(editTask,index)
+      handleEditTask(editTask,task)
       setEditing(false)
     }  
   }
@@ -30,14 +30,17 @@ const Bar=({todoObj,handleEdit,handleDelete}: barProps)=>{
       <div className=' rounded-sm p-1  justify-between  bg-white my-2 '>
          
         <span className=' break-words '>
-          <h1>{todo}</h1>
+          <h1>{task}</h1>
         </span> 
           <span className=' text-white'>
-            <button className='bg-green-500 btn' onClick={()=>{setEditing(true)}} >Edit</button>
-            <button className='btn bg-red-600' onClick={()=>{handleDelete(todo)}} >delete</button>  
+            <button className='bg-green-500 btn' onClick={()=>{
+                
+                setEditing(true)
+              }} >Edit</button>
+            <button className='btn bg-red-600' onClick={()=>{handleDelete(task)}} >delete</button>  
           </span>
         
-        </div>
+      </div>
     }
      
     

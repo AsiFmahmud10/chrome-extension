@@ -2,30 +2,48 @@ import React, { useState,KeyboardEvent, useEffect} from 'react'
 import { useLocalStorage } from '../CustomHooks'
 import Bar from './Bar'
 
+class Storage{
+   KEY :string 
+   constructor(key:string){
+    this.KEY = key
+   }
+
+  get=()=>{
+    const value = window.localStorage.getItem(this.KEY)
+    return value ? JSON.parse(value) : []
+  }
+
+  save(arg:string){
+    window.localStorage.setItem(this.KEY,arg)
+  }
+}
+
 export default function Todo() {
-
-  const [storeValue, setValue] = useLocalStorage<string[]>("app-todo",[])
-  const [todoList,setTodoList] = useState<string[]>(storeValue)
+  const KEY = "app-todo"
+  const storage = new Storage(KEY) 
+  const [todoList,setTodoList] = useState<string[]>(storage.get())
   const [inputTodo, setinputTodo] = useState<string>("")
-
-  useEffect(()=>{
-    setValue(todoList)
-  },[todoList])
   
+
   const addNewTodo=()=>{
-    setTodoList([...todoList,inputTodo]) //alternate not working ??
+    window.localStorage.setItem(KEY, JSON.stringify([...storage.get(),inputTodo]))
+    setTodoList(storage.get())
     setinputTodo("")
   }
+
+  const handleEditTask=(editTask:string, oldTask:string)=>{
+    setTodoList(storage.get())
+    let temp:string[] = storage.get()
+    temp[temp.indexOf(oldTask)] = editTask
+    storage.save(JSON.stringify(temp))
+    setTodoList(temp)
+    // if we use temp = todoList. The result will be erronious->pass by reference
+  }
+  //for adding a new task
   const handleChange=(event : React.ChangeEvent<HTMLInputElement>)=>{
     setinputTodo(event.currentTarget.value)
   }
 
-  const handleEditTodo=(editTask:string, taskIndex:number)=>{
-    let temp = [...todoList]
-    temp[taskIndex] = editTask
-    setTodoList(temp)
-    // if we use temp = todoList. The result will be erronious->pass by reference
-  }
   const handleEnter=(event:KeyboardEvent<HTMLInputElement>)=>{
     if(event.key === "Enter")
       addNewTodo()
@@ -33,9 +51,11 @@ export default function Todo() {
       return undefined
   }
   const handleDeleteTodo=(task:string)=>{
-    let updateAra = todoList.filter((todo, index)=>{
+    let currentTodo :string[] = storage.get()
+    let updateAra = currentTodo.filter((todo, index)=>{
       return task !== todo
     })
+    storage.save(JSON.stringify(updateAra))
     setTodoList(updateAra)
   }
 
@@ -46,11 +66,11 @@ export default function Todo() {
       {/* <button className=' bg-red-300  btn  ' onClick={addNewTodo}>Add</button> */}
        
        {
-          todoList.map((todo, index)=>{
+          todoList.map((task, index)=>{
             return (
-              <div key={todo} >
+              <div key={task} >
                   
-                  <Bar todoObj={{todo,index}} handleEdit={handleEditTodo}
+                  <Bar taskObj={{task,index}} handleEditTask={handleEditTask}
                     handleDelete = {handleDeleteTodo}
                   />
               </div>

@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react"
 
- const useLocalStorage = <T,>(key:string, defaultValue:T):[T,(value:T)=>void]=>{
+ const useLocalStorage = <T,>(key:string, defaultValue:T):[T,(value:T)=>void,()=>void]=>{
     const [storeValue, setStoreValue] = useState(()=>{
+        
         try{
             const value = window.localStorage.getItem(key)
             return value ? JSON.parse(value) : defaultValue
@@ -10,6 +11,15 @@ import { useEffect, useState } from "react"
             return defaultValue
         }
     })
+
+    const refresh=()=>{
+        let value = window.localStorage.getItem(key)
+        value =  value ? JSON.parse(value) : defaultValue
+        setStoreValue(value)
+        console.log(storeValue)
+        console.log('storeValue')
+    }
+    
     
     const setValue=(value: T)=>{
         try{
@@ -22,7 +32,7 @@ import { useEffect, useState } from "react"
 
     }
     
-    return [storeValue, setValue]
+    return [storeValue, setValue,refresh]
 
  }
 
