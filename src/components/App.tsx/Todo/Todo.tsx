@@ -60,7 +60,7 @@ export default function Todo() {
   }
 
   return (
-    <div className=' max-h-[561px] w-80  scroll-smooth  overflow-auto  p-4 text-sm mx-auto backdrop-blur-md bg-gray-50/80 }'>
+    <div className=' max-h-[561px] h-full border border-gray-400 drop-shadow-lg w-80  scroll-smooth  overflow-auto  p-4 text-sm mx-auto backdrop-blur-md bg-gray-50/80 }'>
       
       <input placeholder="add task" className='text-sm  w-full p-1 rounded-md bg-[#ffffffd2] text-gray-900 border-gray-300' value={inputTodo} onKeyDown={handleEnter} type="text" onChange={handleChange} /> 
       {/* <button className=' bg-red-300  btn  ' onClick={addNewTodo}>Add</button> */}

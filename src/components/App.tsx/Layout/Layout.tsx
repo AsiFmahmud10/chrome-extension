@@ -20,18 +20,20 @@ export default function Layout({children}:LayoutProps) {
     <div className='w-screen bg-no-repeat
      h-screen bg-cover bg-center ' style={{backgroundImage:getBackgroundImage() }}
     >
-      <div className=' flex flex-col h-full '>
+      <div className=' flex flex-col justify-between  h-full  '>
+          <div className='  '>
+            <Clock/>
+          </div>
 
-          <Clock/>
-
-          <div className=''>
+          <div className=' bg-blue-500 flex justify-end align-bottom '>
+            <div className=' h-[500px] m-4 '>
               {children}
+
+            </div>
           </div>
-          <div className=' font-semibold text-xl font mt-auto mx-auto p-4 text-white '>
-            {quote}
-          </div>
+ 
       </div>
-        
+
     </div>
   )
 }
